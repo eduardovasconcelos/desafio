@@ -9,6 +9,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,12 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
+	
+	@Value("${spring.security.user.password}")
+	private String role;
+	
+	private static final String LOGIN = "login";
+	private static final String TOKEN = "token";
 
 	public JWTBasicAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super(authenticationManager);
@@ -34,7 +41,7 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
 			throws IOException, ServletException {
 
 		try {			
-			Cookie token = WebUtils.getCookie(request, "token");
+			Cookie token = WebUtils.getCookie(request, TOKEN);
 			
 			if (token == null) {
 				chain.doFilter(request, response);
@@ -43,10 +50,10 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
 			
 			String jwt = token.getValue();
 			
-			DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256("login")).build().verify(jwt);
-			String login = decodedJwt.getClaim("login").asString();	
+			DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256(LOGIN)).build().verify(jwt);
+			String login = decodedJwt.getClaim(LOGIN).asString();	
 			
-			List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+			List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
 			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(login, null, authorities);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			
@@ -55,8 +62,6 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
 			response.sendError(HttpStatus.UNAUTHORIZED.value());
 			return;
 		}
-		
-//		super.doFilterInternal(request, response, chain);
 	}
 
 }
