@@ -29,7 +29,9 @@ public class ComentarioService {
 		return comentarioRepository.findByUsuario(usuario);
 	}
 	
-	public void salvaComentario(Comentario comentario) {
+	public void salvaComentario(Comentario comentario, Principal principal) {
+		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+		comentario.setUsuario(usuario);
 		comentarioRepository.save(comentario);
 	}
 	
@@ -45,7 +47,7 @@ public class ComentarioService {
 	}
 	
 	
-	public void deletaComentario(Long id, Principal principal) throws Exception {
+	public void excluirComentario(Long id, Principal principal) throws Exception {
 		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
 		Comentario comentario = comentarioRepository.findById(id).orElseThrow();
 		

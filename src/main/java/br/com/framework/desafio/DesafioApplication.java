@@ -23,8 +23,13 @@ public class DesafioApplication {
         return args -> {
             Usuario user = new Usuario();
             user.setLogin("eduardo");
-            user.setPassword(DigestUtils.sha1Hex("desafio"));
+            user.setPassword(DigestUtils.sha1Hex("testes"));
             userRepository.save(user);
+            
+            Usuario user2 = new Usuario();
+            user2.setLogin("nando");
+            user2.setPassword(DigestUtils.sha1Hex("nando"));
+            userRepository.save(user2);
         };
     }
 }

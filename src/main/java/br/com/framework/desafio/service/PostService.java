@@ -24,7 +24,9 @@ public class PostService {
 		return postRepository.findAll();
 	}
 	
-	public void salvaPost(Post post) {
+	public void salvaPost(Post post, Principal principal) {
+		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+		post.setUsuario(usuario);
 		postRepository.save(post);
 	}
 	
