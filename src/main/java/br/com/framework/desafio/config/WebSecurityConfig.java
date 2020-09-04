@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.formLogin()
 //		.loginPage("/login")
-//        .defaultSuccessUrl("/index")
+        .defaultSuccessUrl("/ok")
 //        .failureUrl("/login?error=true")
         .permitAll()
 		.and()
@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(this.dataSource)
-		.usersByUsernameQuery("select login, senha, 1 from usuario where login = ?")
+		.usersByUsernameQuery("select login, password, 1 from usuario where login = ?")
 		.authoritiesByUsernameQuery("select ?, 'ROLE_USER';");
 	}
 	
@@ -70,12 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			@Override
 			public boolean matches(CharSequence rawPassword, String encodedPassword) {
-				return DigestUtils.sha1Hex(rawPassword + "salto_NO_PROPERTIES").equals(encodedPassword);
+				return DigestUtils.sha1Hex(rawPassword.toString()).equals(encodedPassword);
 			}
 			
 			@Override
 			public String encode(CharSequence rawPassword) {
-				return DigestUtils.sha1Hex(rawPassword + "salto_NO_PROPERTIES");
+				return DigestUtils.sha1Hex(rawPassword.toString());
 			}
 		};
 	}

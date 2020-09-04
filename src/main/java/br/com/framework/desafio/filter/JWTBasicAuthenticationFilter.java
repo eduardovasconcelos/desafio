@@ -29,6 +29,9 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
 	@Value("${spring.security.user.roles}")
 	private String role;
 	
+	@Value("${spring.security.user.password}")
+	private String password;
+	
 	private static final String LOGIN = "login";
 	private static final String TOKEN = "token";
 
@@ -50,7 +53,7 @@ public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
 			
 			String jwt = token.getValue();
 			
-			DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256(LOGIN)).build().verify(jwt);
+			DecodedJWT decodedJwt = JWT.require(Algorithm.HMAC256(password)).build().verify(jwt);
 			String login = decodedJwt.getClaim(LOGIN).asString();	
 			
 			List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));

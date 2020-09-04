@@ -2,6 +2,7 @@ package br.com.framework.desafio.service;
 
 import java.util.List;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +24,8 @@ public class UsuarioService {
 	}
 	
 	public void salvaUsuario(Usuario usuario) {
+		usuario.setPassword(DigestUtils.sha1Hex(usuario.getPassword()));
 		usuarioRepository.save(usuario);
 	}
 	
-	public Usuario buscaUsuario(Long id) {
-		return null;
-	}
-
 }

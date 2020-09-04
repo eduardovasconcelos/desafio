@@ -5,12 +5,13 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import br.com.framework.desafio.model.Album;
 import br.com.framework.desafio.model.Usuario;
 
 @Repository
-public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
+public interface AlbumRepository extends CrudRepository<Album, Long> {
 
-	List<Usuario> findAll();
+	List<Album> findAll();
 
-	Usuario findByLogin(String login);
+	List<Album> findByUsuario(Usuario usuario);
 }

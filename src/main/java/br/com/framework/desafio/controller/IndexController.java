@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IndexController {
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "/ok")
 	public String index() {
 		return "Configuração Inicial";
 	}
