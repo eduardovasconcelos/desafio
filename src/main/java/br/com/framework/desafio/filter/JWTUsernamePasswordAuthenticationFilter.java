@@ -18,7 +18,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 public class JWTUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	
-	@Value("${spring.security.user.roles}")
+	@Value("${spring.security.user.password}")
 	private String password;
 	
 	private static final String LOGIN = "login";

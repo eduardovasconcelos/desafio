@@ -26,7 +26,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 public class JWTBasicAuthenticationFilter extends BasicAuthenticationFilter {
 	
-	@Value("${spring.security.user.password}")
+	@Value("${spring.security.user.roles}")
 	private String role;
 	
 	private static final String LOGIN = "login";
