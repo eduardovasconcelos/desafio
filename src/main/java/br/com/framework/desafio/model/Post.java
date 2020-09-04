@@ -25,7 +25,7 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String titulo;
-	private String descricao;
+	private String texto;
 	private String link;
 	private byte[] imagem;
 	
