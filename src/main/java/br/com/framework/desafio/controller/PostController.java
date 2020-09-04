@@ -36,13 +36,13 @@ public class PostController {
 		return postService.buscaPost(id, principal);
 	}
 	
-	@PostMapping
-	public void post(Post post, Principal principal) {
-		postService.salvaPost(post, principal);
+	@PostMapping(value = "/post")
+	public void salvarPost(Post post, Principal principal) {
+		postService.salvarPost(post, principal);
 	}
 	
 	@DeleteMapping(value = "post/{id}")
 	public void excluirPost(@PathVariable(required = true) Long id, Principal principal) throws Exception {
-		postService.deletaPost(id, principal);
+		postService.excluirPost(id, principal);
 	}
 }

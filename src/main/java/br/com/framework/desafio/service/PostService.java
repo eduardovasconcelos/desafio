@@ -24,13 +24,13 @@ public class PostService {
 		return postRepository.findAll();
 	}
 	
-	public void salvaPost(Post post, Principal principal) {
+	public void salvarPost(Post post, Principal principal) {
 		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
 		post.setUsuario(usuario);
 		postRepository.save(post);
 	}
 	
-	public void deletaPost(Long id, Principal principal) throws Exception {
+	public void excluirPost(Long id, Principal principal) throws Exception {
 		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
 		Post post = postRepository.findById(id).orElseThrow();
 		

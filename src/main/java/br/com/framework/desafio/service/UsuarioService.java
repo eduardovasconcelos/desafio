@@ -23,7 +23,7 @@ public class UsuarioService {
 		return usuarioRepository.findById(id).orElseThrow();
 	}
 	
-	public void salvaUsuario(Usuario usuario) {
+	public void salvarUsuario(Usuario usuario) {
 		usuario.setPassword(DigestUtils.sha1Hex(usuario.getPassword()));
 		usuarioRepository.save(usuario);
 	}

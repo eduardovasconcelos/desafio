@@ -29,7 +29,7 @@ public class ComentarioService {
 		return comentarioRepository.findByUsuario(usuario);
 	}
 	
-	public void salvaComentario(Comentario comentario, Principal principal) {
+	public void salvarComentario(Comentario comentario, Principal principal) {
 		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
 		comentario.setUsuario(usuario);
 		comentarioRepository.save(comentario);

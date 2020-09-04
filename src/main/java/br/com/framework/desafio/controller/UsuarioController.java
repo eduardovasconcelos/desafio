@@ -37,8 +37,8 @@ public class UsuarioController {
 	
 	@PostMapping(value = "/usuario")
 	@ResponseBody
-	public ResponseEntity<Void> salvaUsuario(@RequestBody Usuario usuario) {
-		usuarioService.salvaUsuario(usuario);
+	public ResponseEntity<Void> salvarUsuario(@RequestBody Usuario usuario) {
+		usuarioService.salvarUsuario(usuario);
 		return ResponseEntity.noContent().build();
 	}
 }

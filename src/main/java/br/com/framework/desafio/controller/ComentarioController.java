@@ -28,8 +28,8 @@ public class ComentarioController {
 	}
 	
 	@PostMapping(value = "")
-	public void adicionaComentario(@RequestBody Comentario comentario, Principal principal) {
-		comentarioService.salvaComentario(comentario, principal);
+	public void salvarComentario(@RequestBody Comentario comentario, Principal principal) {
+		comentarioService.salvarComentario(comentario, principal);
 	}
 
 }

@@ -24,12 +24,21 @@ public class AlbumService {
 		return albumRepository.findAll();
 	}
 	
-	public void salvaAlbum(Album album) {
+	public void salvarAlbum(Album album, Principal principal) {
+		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+		album.setUsuario(usuario);
 		albumRepository.save(album);
 	}
 	
-	public void apagaAlbum(Long id) {
-		albumRepository.deleteById(id);
+	public void excluirAlbum(Long id, Principal principal) throws Exception {
+		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+		Album album = albumRepository.findById(id).orElseThrow();
+		
+		if (album.getId().equals(usuario.getId())) {
+			albumRepository.deleteById(id);
+		} else {
+			 throw new Exception();
+		}
 	}
 	
 	public List<Album> buscaAlbumUsuario(Principal principal) {
