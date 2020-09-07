@@ -1,6 +1,5 @@
 package br.com.framework.desafio.service;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.framework.desafio.model.Post;
 import br.com.framework.desafio.model.Usuario;
+import br.com.framework.desafio.model.dto.PostDTO;
 import br.com.framework.desafio.repository.PostRepository;
 import br.com.framework.desafio.repository.UsuarioRepository;
+import br.com.framework.desafio.utils.InformacaoUsuarioUtils;
 
 @Service
 public class PostService {
@@ -24,14 +25,19 @@ public class PostService {
 		return postRepository.findAll();
 	}
 	
-	public void salvarPost(Post post, Principal principal) {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public void salvarPost(PostDTO postDTO) {
+		Post post = new Post();
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		post.setUsuario(usuario);
+		post.setLink(postDTO.getLink());
+		post.setTexto(postDTO.getTexto());
+		post.setTitulo(postDTO.getTitulo());
+		post.setImagem(postDTO.getImagem().getBytes());
 		postRepository.save(post);
 	}
 	
-	public void excluirPost(Long id, Principal principal) throws Exception {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public void excluirPost(Long id) throws Exception {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Post post = postRepository.findById(id).orElseThrow();
 		
 		if (post.getId().equals(usuario.getId())) {
@@ -41,8 +47,8 @@ public class PostService {
 		}
 	}
 	
-	public Post buscaPost(Long id, Principal principal) throws Exception {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public Post buscaPost(Long id) throws Exception {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Post post = postRepository.findById(id).orElseThrow();
 		
 		if (post.getId().equals(usuario.getId())) {
@@ -53,8 +59,8 @@ public class PostService {
 		
 	}
 
-	public List<Post> listaPostsUsuario(Principal principal) {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public List<Post> listaPostsUsuario() {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		return postRepository.findByUsuario(usuario);
 	}
 }

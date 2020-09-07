@@ -20,6 +20,15 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String login;
+	private String nome;
+	private String username;
 	private String password;
+	private Boolean admin;
+	
+	public Usuario(String nome, String username, String password, Boolean admin) {
+		this.nome = nome;
+		this.username = username;
+		this.password = password;
+		this.admin = admin;
+	}
 }

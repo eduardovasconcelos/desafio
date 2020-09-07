@@ -1,6 +1,5 @@
 package br.com.framework.desafio.service;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import br.com.framework.desafio.model.Comentario;
 import br.com.framework.desafio.model.Usuario;
 import br.com.framework.desafio.repository.ComentarioRepository;
 import br.com.framework.desafio.repository.UsuarioRepository;
+import br.com.framework.desafio.utils.InformacaoUsuarioUtils;
 
 @Service
 public class ComentarioService {
@@ -24,19 +24,19 @@ public class ComentarioService {
 		return comentarioRepository.findAll();
 	}
 	
-	public List<Comentario> listaComentariosUsuario(Principal principal) {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public List<Comentario> listaComentariosUsuario() {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		return comentarioRepository.findByUsuario(usuario);
 	}
 	
-	public void salvarComentario(Comentario comentario, Principal principal) {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public void salvarComentario(Comentario comentario) {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		comentario.setUsuario(usuario);
 		comentarioRepository.save(comentario);
 	}
 	
-	public Comentario comentario(Long id, Principal principal) throws Exception {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public Comentario comentario(Long id) throws Exception {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Comentario comentario = comentarioRepository.findById(id).orElseThrow();
 		
 		if (comentario.getId().equals(usuario.getId())) {
@@ -47,8 +47,8 @@ public class ComentarioService {
 	}
 	
 	
-	public void excluirComentario(Long id, Principal principal) throws Exception {
-		Usuario usuario = usuarioRepository.findByLogin(principal.getName());
+	public void excluirComentario(Long id) throws Exception {
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Comentario comentario = comentarioRepository.findById(id).orElseThrow();
 		
 		if (comentario.getId().equals(usuario.getId())) {
