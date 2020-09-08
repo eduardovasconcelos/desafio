@@ -48,4 +48,10 @@ public class AlbumController {
 		albumService.excluirAlbum(id);
 		return ResponseEntity.ok().build();
 	}
+	
+	@GetMapping(value = "/album/{id}")
+	@ResponseBody
+	public AlbumDTO abrirAlbum(@PathVariable(required = true) Long id) {
+		return albumService.abrirAlbum(id);
+	}
 }

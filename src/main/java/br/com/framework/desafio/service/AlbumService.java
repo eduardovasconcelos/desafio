@@ -84,4 +84,14 @@ public class AlbumService {
 		
 	}
 
+	public AlbumDTO abrirAlbum(Long id) {
+		Album album =  albumRepository.findById(id).orElseThrow();			
+		AlbumDTO dto = new AlbumDTO();
+		dto.setId(album.getId());
+		dto.setDono(album.getUsuario().getUsername());
+		dto.setFotos(album.getFotos());
+		dto.setNome(album.getNome());
+		return dto;
+	}
+
 }
