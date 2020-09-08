@@ -7,7 +7,7 @@ Requisitos para execução:
 
 2) Banco de Dados: Postgres Configurado
 
-    2.1) O banco é criado automaticamente quando a aplicação é executada.
+    2.1) O banco (desafio) deve ser criado (create database desafio) e as tabelas são criadas automaticamente quando a aplicação é executada.
  
     2.2) O arquivo application.properties contém os dados da conexão do banco.
   
