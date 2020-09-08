@@ -39,7 +39,7 @@ public class ComentarioService {
 		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Comentario comentario = comentarioRepository.findById(id).orElseThrow();
 		
-		if (comentario.getId().equals(usuario.getId())) {
+		if (comentario.getUsuario().getId().equals(usuario.getId())) {
 			return comentario;
 		} else {
 			 throw new Exception();
@@ -51,7 +51,7 @@ public class ComentarioService {
 		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Comentario comentario = comentarioRepository.findById(id).orElseThrow();
 		
-		if (comentario.getId().equals(usuario.getId())) {
+		if (comentario.getUsuario().getId().equals(usuario.getId())) {
 			comentarioRepository.delete(comentario);
 		} else {
 			 throw new Exception();

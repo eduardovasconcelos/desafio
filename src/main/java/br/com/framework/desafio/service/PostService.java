@@ -40,7 +40,7 @@ public class PostService {
 		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Post post = postRepository.findById(id).orElseThrow();
 		
-		if (post.getId().equals(usuario.getId())) {
+		if (post.getUsuario().getId().equals(usuario.getId())) {
 			postRepository.deleteById(id);
 		} else {
 			 throw new Exception();
@@ -51,7 +51,7 @@ public class PostService {
 		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		Post post = postRepository.findById(id).orElseThrow();
 		
-		if (post.getId().equals(usuario.getId())) {
+		if (post.getUsuario().getId().equals(usuario.getId())) {
 			return post;
 		} else {
 			 throw new Exception();

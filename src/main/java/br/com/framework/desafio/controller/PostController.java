@@ -3,6 +3,7 @@ package br.com.framework.desafio.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,12 +43,14 @@ public class PostController {
 	}
 	
 	@PostMapping(value = "/post")
-	public void salvarPost(@RequestBody PostDTO postDTO) {
+	public ResponseEntity<?> salvarPost(@RequestBody PostDTO postDTO) {
 		postService.salvarPost(postDTO);
+		return ResponseEntity.ok().build();
 	}
 	
 	@DeleteMapping(value = "post/{id}")
-	public void excluirPost(@PathVariable(required = true) Long id) throws Exception {
+	public ResponseEntity<?> excluirPost(@PathVariable(required = true) Long id) throws Exception {
 		postService.excluirPost(id);
+		return ResponseEntity.ok().build();
 	}
 }

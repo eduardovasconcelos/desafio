@@ -26,6 +26,7 @@ public class Post {
 	private Long id;
 	private String titulo;
 	private String texto;
+	private String palavrasChave;
 	private String link;
 	private byte[] imagem;
 	

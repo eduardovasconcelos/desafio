@@ -1,6 +1,7 @@
 package br.com.framework.desafio.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,13 +20,15 @@ public class ComentarioController {
 	private ComentarioService comentarioService;
 	
 	@DeleteMapping(value = "/comentario/{id}")
-	public void excluirComentario(@PathVariable(required = true) Long id) throws Exception {
+	public ResponseEntity<?> excluirComentario(@PathVariable(required = true) Long id) throws Exception {
 		comentarioService.excluirComentario(id);
+		return ResponseEntity.ok().build();
 	}
 	
 	@PostMapping(value = "/comentario")
-	public void salvarComentario(@RequestBody Comentario comentario) {
+	public ResponseEntity<?> salvarComentario(@RequestBody Comentario comentario) {
 		comentarioService.salvarComentario(comentario);
+		return ResponseEntity.ok().build();
 	}
 
 }
