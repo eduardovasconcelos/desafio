@@ -1,12 +1,18 @@
 package br.com.framework.desafio.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.framework.desafio.model.Post;
 import br.com.framework.desafio.model.Usuario;
+import br.com.framework.desafio.model.dto.ComentarioDTO;
 import br.com.framework.desafio.model.dto.PostDTO;
 import br.com.framework.desafio.repository.PostRepository;
 import br.com.framework.desafio.repository.UsuarioRepository;
@@ -21,8 +27,36 @@ public class PostService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	public List<Post> listaTodos() {
-		return postRepository.findAll();
+	public List<PostDTO> listaTodos() {
+		return postRepository.findAll()
+				.stream()
+				.map(post -> {
+					PostDTO dto = new PostDTO();
+					dto.setId(post.getId());					
+					dto.setDono(post.getUsuario().getUsername());
+					dto.setImagem(post.getImagem());
+					dto.setLink(post.getLink());
+					dto.setTexto(post.getTexto());
+					dto.setTitulo(post.getTitulo());
+					
+					return dto;
+				}).collect(Collectors.toList());
+	}
+	
+	public List<PostDTO> listaPostsPesquisa(String filtro) {
+		return postRepository.findByTextoContainingAndLinkContaining(filtro, filtro)
+				.stream()
+				.map(post -> {
+					PostDTO dto = new PostDTO();
+					dto.setId(post.getId());
+					dto.setDono(post.getUsuario().getUsername());
+					dto.setImagem(post.getImagem());
+					dto.setLink(post.getLink());
+					dto.setTexto(post.getTexto());
+					dto.setTitulo(post.getTitulo());
+										
+					return dto;
+				}).collect(Collectors.toList());
 	}
 	
 	public void salvarPost(PostDTO postDTO) {
@@ -32,7 +66,7 @@ public class PostService {
 		post.setLink(postDTO.getLink());
 		post.setTexto(postDTO.getTexto());
 		post.setTitulo(postDTO.getTitulo());
-		post.setImagem(postDTO.getImagem().getBytes());
+		post.setImagem(postDTO.getImagem());
 		postRepository.save(post);
 	}
 	
@@ -47,20 +81,42 @@ public class PostService {
 		}
 	}
 	
-	public Post buscaPost(Long id) throws Exception {
-		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
+	public PostDTO buscaPost(Long id) throws Exception {
 		Post post = postRepository.findById(id).orElseThrow();
+		List<ComentarioDTO> comentarios = post.getComentarios()
+				.stream()
+				.map(comentario -> {
+					ComentarioDTO dto = new ComentarioDTO();
+					dto.setConteudo(comentario.getTexto());
+					dto.setId(comentario.getId());
+					dto.setDono(comentario.getUsuario().getUsername());
+					return dto;
+				}).collect(Collectors.toList());
+		PostDTO dto = new PostDTO(post.getId(),
+				post.getTitulo(),
+				post.getTexto(),
+				post.getLink(),
+				post.getUsuario().getUsername(),
+				post.getImagem(),
+				comentarios);
 		
-		if (post.getUsuario().getId().equals(usuario.getId())) {
-			return post;
-		} else {
-			 throw new Exception();
-		}
-		
+		return dto;
 	}
 
 	public List<Post> listaPostsUsuario() {
 		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
 		return postRepository.findByUsuario(usuario);
+	}
+
+	public void salvarPost(HttpServletRequest request, String texto, MultipartFile arquivo) throws IOException {
+		Post post = new Post();
+		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
+		post.setUsuario(usuario);
+		post.setLink(request.getParameter("link"));
+		post.setTexto(texto);
+		post.setTitulo(request.getParameter("titulo"));
+		post.setImagem(arquivo.getBytes());
+		postRepository.save(post);
+		
 	}
 }

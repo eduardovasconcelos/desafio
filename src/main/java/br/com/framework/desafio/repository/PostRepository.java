@@ -14,4 +14,6 @@ public interface PostRepository extends CrudRepository<Post, Long>{
 	List<Post> findAll();
 	
 	List<Post> findByUsuario(Usuario usuario);
+	
+	List<Post> findByTextoContainingAndLinkContaining(String texto, String link);
 }

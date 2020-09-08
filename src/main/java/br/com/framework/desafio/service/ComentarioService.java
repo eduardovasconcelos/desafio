@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.framework.desafio.model.Comentario;
+import br.com.framework.desafio.model.Post;
 import br.com.framework.desafio.model.Usuario;
+import br.com.framework.desafio.model.dto.ComentarioDTO;
 import br.com.framework.desafio.repository.ComentarioRepository;
+import br.com.framework.desafio.repository.PostRepository;
 import br.com.framework.desafio.repository.UsuarioRepository;
 import br.com.framework.desafio.utils.InformacaoUsuarioUtils;
 
@@ -19,6 +22,9 @@ public class ComentarioService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private PostRepository postRepository; 
 
 	public List<Comentario> listaTodos() {
 		return comentarioRepository.findAll();
@@ -29,9 +35,14 @@ public class ComentarioService {
 		return comentarioRepository.findByUsuario(usuario);
 	}
 	
-	public void salvarComentario(Comentario comentario) {
+	public void salvarComentario(ComentarioDTO comentarioDTO) {
+		Comentario comentario = new Comentario();
 		Usuario usuario = usuarioRepository.findByUsername(InformacaoUsuarioUtils.getNameUser()).get();
+		Post post = postRepository.findById(comentarioDTO.getIdPost()).orElseThrow();
+		
 		comentario.setUsuario(usuario);
+		comentario.setTexto(comentarioDTO.getConteudo());
+		comentario.setPost(post);
 		comentarioRepository.save(comentario);
 	}
 	

@@ -2,6 +2,7 @@ package br.com.framework.desafio.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,8 +26,10 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String titulo;
+	
+	@Column(columnDefinition="text", length=10485760)
 	private String texto;
-	private String palavrasChave;
+	
 	private String link;
 	private byte[] imagem;
 	
