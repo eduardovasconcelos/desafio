@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,10 +29,17 @@ public class UsuarioService {
 		return usuarioRepository.findById(id).orElseThrow();
 	}
 	
-	public void salvarUsuario(Usuario usuario) {
+	public ResponseEntity<?> salvarUsuario(Usuario usuario) {
+		if (usuarioRepository.existsByUsername(usuario.getUsername())) {
+	      return new ResponseEntity<>("Falha -> Username já existe",
+	          HttpStatus.BAD_REQUEST);
+	    }
+		
 		usuario.setAdmin(usuario.getAdmin() == null || Boolean.FALSE.equals(usuario.getAdmin()) ? false : true);
 		usuario.setPassword(DigestUtils.sha1Hex(usuario.getPassword()));
 		usuarioRepository.save(usuario);
+		
+		return ResponseEntity.ok().build();
 	}
 
 	public UsuarioDTO buscaUsuarioLogado() {

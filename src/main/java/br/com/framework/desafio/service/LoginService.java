@@ -1,6 +1,7 @@
 package br.com.framework.desafio.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,6 +46,11 @@ public class LoginService {
 	}
 
 	public ResponseEntity<?> registraUsuario(UsuarioDTO usuarioDTO) {
+		
+		if (usuarioRepository.existsByUsername(usuarioDTO.getUsername())) {
+	      return new ResponseEntity<>("Username não está disponível",
+	          HttpStatus.BAD_REQUEST);
+	    }
 
 		Usuario user = new Usuario(usuarioDTO.getNome(),
 				usuarioDTO.getUsername(), 
