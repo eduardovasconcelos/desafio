@@ -46,15 +46,15 @@ public class JwtProvider {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
-            logger.error("Invalid JWT signature -> Message: {} ", e);
+            logger.error("Assinatura inválida para o JWT -> Message: {} ", e);
         } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token -> Message: {}", e);
+            logger.error("Token JWT inválido -> Message: {}", e);
         } catch (ExpiredJwtException e) {
-            logger.error("Expired JWT token -> Message: {}", e);
+            logger.error("Token JWT expirado -> Message: {}", e);
         } catch (UnsupportedJwtException e) {
-            logger.error("Unsupported JWT token -> Message: {}", e);
+            logger.error("Token JWT não suportado -> Message: {}", e);
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty -> Message: {}", e);
+            logger.error("JWT string de claims vazia -> Message: {}", e);
         }
         
         return false;
