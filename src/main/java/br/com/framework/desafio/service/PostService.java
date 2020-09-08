@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.framework.desafio.model.Comentario;
 import br.com.framework.desafio.model.Post;
 import br.com.framework.desafio.model.Usuario;
 import br.com.framework.desafio.model.dto.ComentarioDTO;
 import br.com.framework.desafio.model.dto.PostDTO;
+import br.com.framework.desafio.repository.ComentarioRepository;
 import br.com.framework.desafio.repository.PostRepository;
 import br.com.framework.desafio.repository.UsuarioRepository;
 import br.com.framework.desafio.utils.InformacaoUsuarioUtils;
@@ -26,6 +28,9 @@ public class PostService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private ComentarioRepository comentarioRepository;
 
 	public List<PostDTO> listaTodos() {
 		return postRepository.findAll()
@@ -83,7 +88,8 @@ public class PostService {
 	
 	public PostDTO buscaPost(Long id) throws Exception {
 		Post post = postRepository.findById(id).orElseThrow();
-		List<ComentarioDTO> comentarios = post.getComentarios()
+		List<Comentario> coment = comentarioRepository.findByPost(post);
+		List<ComentarioDTO> comentarios = coment
 				.stream()
 				.map(comentario -> {
 					ComentarioDTO dto = new ComentarioDTO();
