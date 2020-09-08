@@ -21,6 +21,5 @@ public class Foto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private String descricao;
 	private byte[] arquivo;
 }

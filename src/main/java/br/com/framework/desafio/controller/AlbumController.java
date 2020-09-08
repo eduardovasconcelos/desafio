@@ -1,5 +1,6 @@
 package br.com.framework.desafio.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.com.framework.desafio.model.Album;
+import br.com.framework.desafio.model.dto.AlbumDTO;
 import br.com.framework.desafio.service.AlbumService;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api")
 public class AlbumController {
 
@@ -30,19 +31,21 @@ public class AlbumController {
 	
 	@GetMapping(value = "/albums")
 	@ResponseBody
-	public List<Album> albums() {
+	public List<AlbumDTO> albums() {
 		return albumService.buscaTodos();
 	}
 	
 	@PostMapping(value = "/album")
 	@ResponseBody
-	public ResponseEntity<Void> salvarAlbum(HttpServletRequest request, @RequestParam("arquivos") MultipartFile[] arquivos) {
+	public ResponseEntity<Void> salvarAlbum(HttpServletRequest request, @RequestParam("arquivos") MultipartFile[] arquivos) throws IOException {
 		albumService.salvarAlbum(request, arquivos);
 		return ResponseEntity.ok().build();
 	}
 	
 	@DeleteMapping(value = "/album/{id}")
-	public void excluirAlbum(@PathVariable(required = true) Long id) throws Exception {
+	@ResponseBody
+	public ResponseEntity<Void> excluirAlbum(@PathVariable(required = true) Long id) throws Exception {
 		albumService.excluirAlbum(id);
+		return ResponseEntity.ok().build();
 	}
 }
