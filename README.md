@@ -5,7 +5,6 @@ Requisitos para execução:
 
 1) JDK 8 ou superior.
 
-
 2) Banco de Dados: Postgres Configurado
 
   2.1) O banco é criado automaticamente quando a aplicação é executada.
